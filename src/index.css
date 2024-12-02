@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Smooth scrolling */
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #6b7280 #f3f4f6; /* thumb color and track color */
+}
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 4px;
+}
+.scrollbar::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+/* Base light theme styles */
+/* Base light theme styles */
+body {
+  background-color: #ffffff;
+  color: #1a202c;
+}
+
+a {
+  color: #1a202c;
+}
+
+/* Dark theme styles */
+html.dark {
+  background-color: #1a202c;
+  color: #f7fafc;
+}
+
+html.dark a {
+  color: #f7fafc;
+}
+
+/* Transition for smooth changes between themes */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Additional specific element styles for dark and light modes */
+.dark .bg-gray-900 {
+  background-color: #2d3748;
+}
+
+.dark .text-white {
+  color: #f7fafc;
+}
+
+.bg-gray-200 {
+  background-color: #edf2f7;
+}
+
+.dark .bg-gray-800 {
+  background-color: #2d3748;
+}
+
+button {
+  transition: transform 0.3s ease;
+}
+
+/* Custom styles for the dark/light mode toggle button */
+button {
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+html {
+  scroll-behavior: smooth;
+}
