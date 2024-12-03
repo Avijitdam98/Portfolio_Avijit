@@ -118,7 +118,7 @@ src/
 
 ## 📜 License  
 
-This project is licensed under the **MIT License**. Feel free to use, modify, and distribute this project as per the terms of the license.  
+This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE) file for more details.
 
 ---
 
