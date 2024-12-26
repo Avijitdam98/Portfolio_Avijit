@@ -1,80 +1,88 @@
-import React, { useState, useEffect } from "react";
-import Hero from "./components/Hero";
-import About from "./components/About";
-import Projects from "./components/Projects";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import Education from "./components/Education";
-import WorkExperience from "./components/WorkExperience";
+import React, { Suspense } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ThemeProvider } from './context/ThemeContext';
+import AnimatedCursor from './components/AnimatedCursor';
+import ParallaxBackground from './components/ParallaxBackground';
+import ScrollProgress from './components/ScrollProgress';
+import NavigationMenu from './components/NavigationMenu';
+import ThemeToggle from './components/ThemeToggle';
+import ThemePreference from './components/ThemePreference';
+import Loading from './components/Loading';
+import Hero from './components/Hero';
+import About from './components/About';
+import Education from './components/Education';
+import Contact from './components/Contact';
+import Projects from './components/Projects';
+import WorkExperience from './components/WorkExperience';
+import Testimonials from './components/Testimonials';
+import Footer from './components/Footer';
+import ScrollToTopButton from './components/ScrollToTopButton';
 
-import Testimonials from "./components/Testimonials";
-
-const App = () => {
-  const [theme, setTheme] = useState("dark"); // Default to dark mode
-
-  // Set theme based on user preference or default to dark
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    // If no theme is saved, default to dark
-    if (!savedTheme) {
-      document.documentElement.classList.add("dark");
-    } else {
-      setTheme(savedTheme);
-      document.documentElement.classList.toggle("dark", savedTheme === "dark");
-    }
-  }, []);
-
-  // Toggle dark/light mode and store preference
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme); // Save preference in localStorage
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-  };
-
+function App() {
   return (
-    <div
-      className={`min-h-screen ${
-        theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-gray-900"
-      }`}
-    >
-      {/* Dark/Light Mode Button */}
-      <button
-        onClick={toggleTheme}
-        className="fixed z-50 p-3 text-lg text-gray-900 transition-all duration-300 bg-gray-200 rounded-full shadow-md top-4 right-4 dark:bg-gray-800 dark:text-white hover:scale-110"
-        style={{
-          zIndex: 9999, // Ensures button stays on top of other content
-        }}
-      >
-        {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
-      </button>
+    <ThemeProvider>
+      <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="min-h-screen transition-colors duration-300"
+        >
+          <AnimatedCursor />
+          <ThemePreference />
+          <ThemeToggle />
+          
+          <Suspense fallback={<Loading />}>
+            <div className="relative bg-black text-white min-h-screen">
+              <ParallaxBackground />
+              <ScrollProgress />
+              <NavigationMenu />
 
-      {/* Sections */}
-      <div id="hero">
-        <Hero />
-      </div>
-      <div id="about">
-        <About />
-      </div>
-      <div id="testimonial">
-        <Testimonials /> {/* Testimonial Section */}
-      </div>
-      <div id="education">
-        <Education />
-      </div>
-      <div id="work-experience">
-        <WorkExperience />
-      </div>
-      <div id="projects">
-        <Projects />
-      </div>
-      <div id="contact">
-        <Contact />
-      </div>
+              <AnimatePresence mode="wait">
+                <motion.main
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <section id="hero" className="min-h-screen">
+                    <Hero />
+                  </section>
 
-      <Footer />
-    </div>
+                  <section id="about" className="min-h-screen">
+                    <About />
+                  </section>
+
+                  <section id="education" className="min-h-screen">
+                    <Education />
+                  </section>
+
+                  <section id="work-experience" className="min-h-screen">
+                    <WorkExperience />
+                  </section>
+
+                  <section id="projects" className="min-h-screen">
+                    <Projects />
+                  </section>
+
+                  <section id="testimonial" className="min-h-screen">
+                    <Testimonials />
+                  </section>
+
+                  <section id="contact" className="min-h-screen">
+                    <Contact />
+                  </section>
+                </motion.main>
+              </AnimatePresence>
+
+              <ScrollToTopButton />
+              <Footer />
+            </div>
+          </Suspense>
+        </motion.div>
+      </AnimatePresence>
+    </ThemeProvider>
   );
-};
+}
 
 export default App;

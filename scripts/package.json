@@ -1,0 +1,12 @@
+{
+  "name": "portfolio-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "capture": "node capture-screenshots.js"
+  },
+  "dependencies": {
+    "puppeteer": "^21.6.1",
+    "sharp": "^0.33.1"
+  }
+}
