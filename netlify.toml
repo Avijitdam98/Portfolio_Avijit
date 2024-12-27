@@ -1,0 +1,17 @@
+NODE_ENV=production
+MONGODB_URI=mongodb+srv://avijitdam18:Mnbvcxz123@cluster0.i8ela.mongodb.net/Portfolio_2024
+JWT_SECRET=your_super_secret_jwt_key_2024
+ADMIN_SETUP_KEY=initial_setup_key_2024
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=admin123[build]
+  command = "npm run build"
+  publish = "dist"
+
+[dev]
+  command = "npm run dev"
+  port = 3000
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
