@@ -44,7 +44,7 @@ const MainContent = () => (
 
 function App() {
   return (
-    <Router>
+    <Router basename="/Portfolio_Avijit">
       <ThemeProvider>
         <AuthProvider>
           <AnimatePresence mode="wait">

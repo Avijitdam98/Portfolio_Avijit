@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { API_ENDPOINTS } from '../../config/api';
 
 const SimpleAdmin = () => {
   const [cvs, setCvs] = useState([]);
@@ -10,7 +11,9 @@ const SimpleAdmin = () => {
   const fetchCVs = async () => {
     try {
       setError(null);
-      const response = await fetch('/api/cv/list');
+      const response = await fetch(`${API_ENDPOINTS.cv}/list`, {
+        credentials: 'include'
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch CVs');
       }
@@ -43,9 +46,10 @@ const SimpleAdmin = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/cv/upload', {
+      const response = await fetch(`${API_ENDPOINTS.cv}/upload`, {
         method: 'POST',
         body: formData,
+        credentials: 'include'
       });
       
       if (!response.ok) {
@@ -65,8 +69,9 @@ const SimpleAdmin = () => {
   const handleToggleActive = async (id) => {
     try {
       setError(null);
-      const response = await fetch(`/api/cv/${id}/toggle-active`, {
+      const response = await fetch(`${API_ENDPOINTS.cv}/${id}/toggle-active`, {
         method: 'PATCH',
+        credentials: 'include'
       });
       
       if (!response.ok) {
@@ -84,8 +89,9 @@ const SimpleAdmin = () => {
   const handleDelete = async (id) => {
     try {
       setError(null);
-      const response = await fetch(`/api/cv/${id}`, {
+      const response = await fetch(`${API_ENDPOINTS.cv}/${id}`, {
         method: 'DELETE',
+        credentials: 'include'
       });
       
       if (!response.ok) {
@@ -103,7 +109,9 @@ const SimpleAdmin = () => {
   const handleDownload = async (id) => {
     try {
       setError(null);
-      const response = await fetch('/api/cv/latest');
+      const response = await fetch(`${API_ENDPOINTS.cv}/latest`, {
+        credentials: 'include'
+      });
       
       if (!response.ok) {
         const errorData = await response.json();

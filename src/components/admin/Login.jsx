@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { API_ENDPOINTS } from '../../config/api';
 
 const Login = () => {
   const [email, setEmail] = useState('admin@example.com');
@@ -22,8 +23,20 @@ const Login = () => {
     setLoading(true);
 
     try {
-      console.log('Attempting login with:', { email, password });
-      await login(email, password);
+      const response = await fetch(`${API_ENDPOINTS.admin}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include'
+      });
+      const data = await response.json();
+      if (data.success) {
+        await login(email, password);
+      } else {
+        throw new Error(data.message);
+      }
     } catch (err) {
       console.error('Login error:', err);
       setError(err.message || 'Failed to login. Please try again.');
