@@ -1,20 +1,12 @@
-import React, { Suspense, useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import AnimatedCursor from './components/AnimatedCursor';
-import ParallaxBackground from './components/ParallaxBackground';
-import ScrollProgress from './components/ScrollProgress';
-import ScrollLines from './components/ScrollLines';
-import Loading from './components/Loading';
-import Hero from './components/Hero';
-import About from './components/About';
-import Contact from './components/Contact';
-import Projects from './components/Projects';
-import Footer from './components/Footer';
+import { AuthProvider } from './context/AuthContext';
+import { AnimatePresence } from 'framer-motion';
+import MainLayout from './components/MainLayout';
 import Login from './components/admin/Login';
 import SimpleAdmin from './components/admin/SimpleAdmin';
+import PrivateRoute from './components/PrivateRoute';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -44,42 +36,20 @@ const MainContent = () => (
 
 function App() {
   return (
-    <Router basename="/Portfolio_Avijit">
+    <Router>
       <ThemeProvider>
         <AuthProvider>
           <AnimatePresence mode="wait">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <AnimatedCursor />
-              <ParallaxBackground />
-              <ScrollProgress />
-              <ScrollLines />
-              
-              <Suspense fallback={<Loading />}>
-                <Routes>
-                  {/* Admin routes */}
-                  <Route path="/admin/login" element={<Login />} />
-                  <Route
-                    path="/admin/*"
-                    element={
-                      <ProtectedRoute>
-                        <Routes>
-                          <Route index element={<Navigate to="dashboard" replace />} />
-                          <Route path="dashboard" element={<SimpleAdmin />} />
-                        </Routes>
-                      </ProtectedRoute>
-                    }
-                  />
-                  
-                  {/* Public routes */}
-                  <Route path="/*" element={<MainContent />} />
-                </Routes>
-              </Suspense>
-            </motion.div>
+            <Routes>
+              <Route path="/" element={<MainLayout />} />
+              <Route path="/admin" element={<Login />} />
+              <Route path="/admin/dashboard" element={
+                <PrivateRoute>
+                  <SimpleAdmin />
+                </PrivateRoute>
+              } />
+              <Route path="*" element={<MainLayout />} />
+            </Routes>
           </AnimatePresence>
         </AuthProvider>
       </ThemeProvider>
