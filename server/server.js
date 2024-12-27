@@ -14,7 +14,7 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://resplendent-travesseiro-6f3023.netlify.app'] 
+    ? ['https://portfolio-avijit.vercel.app', 'https://resplendent-travesseiro-6f3023.netlify.app'] 
     : ['http://localhost:5173'],
   credentials: true
 }));
