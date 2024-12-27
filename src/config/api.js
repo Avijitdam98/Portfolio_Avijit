@@ -1,6 +1,7 @@
-const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://portfolio-backend-h4cs.onrender.com'  // Replace with your actual Render URL
-  : 'http://localhost:10000'; // Updated local port to match backend
+const API_BASE_URL = import.meta.env.VITE_API_URL || 
+  (process.env.NODE_ENV === 'production'
+    ? 'https://portfolio-backend-h4cs.onrender.com'
+    : 'http://localhost:5000');
 
 export const API_ENDPOINTS = {
   base: API_BASE_URL,
