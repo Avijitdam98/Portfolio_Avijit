@@ -2,13 +2,12 @@
   "name": "modern-portfolio",
   "private": true,
   "version": "0.0.0",
-  "type": "commonjs",
-  "homepage": "https://Avijitdam98.github.io/Portfolio_Avijit",
+  "type": "module",
+  "homepage": "https://avijitdam98.github.io/Portfolio_Avijit/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "start": "node start.js",
-    "lint": "eslint .",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
