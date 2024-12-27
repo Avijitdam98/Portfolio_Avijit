@@ -15,8 +15,10 @@ const app = express();
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? ['https://portfolio-avijit.vercel.app', 'https://resplendent-travesseiro-6f3023.netlify.app'] 
-    : ['http://localhost:5173'],
-  credentials: true
+    : ['http://localhost:5173', 'http://192.168.190.1:5173'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

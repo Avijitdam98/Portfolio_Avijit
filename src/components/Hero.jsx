@@ -4,6 +4,7 @@ import { GithubIcon, LinkedinIcon, MailIcon, ArrowRightIcon, DownloadIcon } from
 import Typewriter from "typewriter-effect";
 import ScrollIndicator from "./ScrollIndicator";
 import { useTheme } from '../context/ThemeContext';
+import { API_ENDPOINTS } from '../config/api';
 
 const Hero = () => {
   const { theme } = useTheme();
@@ -25,7 +26,7 @@ const Hero = () => {
       setDownloadError(null);
       
       console.log('Fetching CV from server...');
-      const response = await fetch('http://localhost:5000/api/cv/latest');
+      const response = await fetch(`${API_ENDPOINTS.cv}/latest`);
       
       if (!response.ok) {
         const errorData = await response.json();
