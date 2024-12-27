@@ -1,26 +1,18 @@
 {
   "version": 2,
-  "builds": [
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "vite",
+  "outputDirectory": "dist",
+  "rewrites": [
     {
-      "src": "package.json",
-      "use": "@vercel/node",
-      "config": { "maxLambdaSize": "15mb" }
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "VITE_API_URL": "https://portfolio-backend-h4cs.onrender.com"
   }
 }
