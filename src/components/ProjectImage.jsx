@@ -5,18 +5,27 @@ const ProjectImage = ({ src, alt, className, gradient }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const defaultGradient = {
+    from: "#3B82F6",
+    via: "#6366F1",
+    to: "#8B5CF6"
+  };
+
+  // Use provided gradient or default gradient
+  const activeGradient = gradient || defaultGradient;
+
   const placeholderImage = `data:image/svg+xml,${encodeURIComponent(`
     <svg width="100%" height="100%" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:%23${gradient.from.slice(1)};stop-opacity:1" />
-          <stop offset="50%" style="stop-color:%23${gradient.via.slice(1)};stop-opacity:1" />
-          <stop offset="100%" style="stop-color:%23${gradient.to.slice(1)};stop-opacity:1" />
+          <stop offset="0%" style="stop-color:%23${activeGradient.from.slice(1)};stop-opacity:1" />
+          <stop offset="50%" style="stop-color:%23${activeGradient.via.slice(1)};stop-opacity:1" />
+          <stop offset="100%" style="stop-color:%23${activeGradient.to.slice(1)};stop-opacity:1" />
         </linearGradient>
       </defs>
       <rect width="100%" height="100%" fill="url(%23grad)"/>
       <text x="50%" y="50%" font-family="Arial" font-size="48" fill="white" text-anchor="middle" dy=".3em">
-        ${alt}
+        ${alt || 'Loading...'}
       </text>
     </svg>
   `)}`;
@@ -31,7 +40,7 @@ const ProjectImage = ({ src, alt, className, gradient }) => {
   };
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div className={`relative w-full h-full overflow-hidden ${className || ''}`}>
       <AnimatePresence>
         {isLoading && (
           <motion.div
@@ -51,15 +60,6 @@ const ProjectImage = ({ src, alt, className, gradient }) => {
                   ease: "linear",
                 }}
               />
-              <motion.div
-                className="absolute inset-0 rounded-full border-l-2 border-r-2 border-white"
-                animate={{ rotate: -360 }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-              />
             </div>
           </motion.div>
         )}
@@ -67,13 +67,21 @@ const ProjectImage = ({ src, alt, className, gradient }) => {
 
       <motion.img
         src={error ? placeholderImage : src}
-        alt={alt}
-        className={className}
+        alt={alt || 'Project Image'}
         onLoad={handleLoad}
         onError={handleError}
         initial={{ opacity: 0 }}
-        animate={{ opacity: isLoading ? 0 : 1 }}
-        transition={{ duration: 0.3 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className={`w-full h-full object-cover rounded-lg ${error ? 'filter blur-sm' : ''}`}
+      />
+
+      {/* Gradient overlay */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
       />
     </div>
   );

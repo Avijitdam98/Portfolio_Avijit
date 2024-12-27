@@ -81,227 +81,209 @@ const Contact = () => {
     }
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
   return (
-    <div id="contact" className={`min-h-screen flex items-center justify-center p-4 ${
-      isDark ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
-    }`}>
-      <div className="container max-w-6xl mx-auto py-20">
+    <section className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden" id="contact">
+      {/* Background Effects */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)]" 
+             style={{ backgroundSize: '14px 24px' }} />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-30 blur-3xl" />
+      </div>
+
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid md:grid-cols-2 gap-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="max-w-4xl mx-auto text-center mb-16"
         >
+          <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 text-transparent bg-clip-text mb-4">
+            Let's Connect
+          </h2>
+          <p className="text-gray-400 text-lg">
+            Feel free to reach out for collaborations or just a friendly hello
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="relative"
+          >
+            <div className="backdrop-blur-xl bg-white/5 p-8 rounded-2xl border border-white/10 shadow-xl">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-4">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="relative"
+                  >
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      onFocus={() => setFocusedField('name')}
+                      onBlur={() => setFocusedField(null)}
+                      placeholder="Your Name"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all text-white placeholder-gray-400"
+                      required
+                    />
+                    {focusedField === 'name' && (
+                      <motion.div
+                        layoutId="input-focus"
+                        className="absolute inset-0 -z-10 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="relative"
+                  >
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      onFocus={() => setFocusedField('email')}
+                      onBlur={() => setFocusedField(null)}
+                      placeholder="Your Email"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all text-white placeholder-gray-400"
+                      required
+                    />
+                    {focusedField === 'email' && (
+                      <motion.div
+                        layoutId="input-focus"
+                        className="absolute inset-0 -z-10 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="relative"
+                  >
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      onFocus={() => setFocusedField('message')}
+                      onBlur={() => setFocusedField(null)}
+                      placeholder="Your Message"
+                      rows="4"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all text-white placeholder-gray-400 resize-none"
+                      required
+                    />
+                    {focusedField === 'message' && (
+                      <motion.div
+                        layoutId="input-focus"
+                        className="absolute inset-0 -z-10 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20 blur"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+                  </motion.div>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`w-full py-3 px-6 rounded-lg flex items-center justify-center space-x-2 text-white font-medium transition-all ${
+                    isSubmitting
+                      ? 'bg-purple-500/50 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-blue-500 to-purple-500 hover:shadow-lg hover:shadow-purple-500/25'
+                  }`}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>Send Message</span>
+                      <Send className="w-5 h-5" />
+                    </>
+                  )}
+                </motion.button>
+              </form>
+
+              <AnimatePresence>
+                {submitStatus && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className={`mt-4 p-4 rounded-lg ${
+                      submitStatus === 'success'
+                        ? 'bg-green-500/20 text-green-400'
+                        : 'bg-red-500/20 text-red-400'
+                    }`}
+                  >
+                    {submitStatus === 'success'
+                      ? 'Message sent successfully!'
+                      : 'Failed to send message. Please try again.'}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+
           {/* Contact Information */}
-          <motion.div className="space-y-8">
-            <motion.h2 
-              variants={itemVariants}
-              className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent"
-            >
-              Get in Touch
-            </motion.h2>
-
-            <motion.p 
-              variants={itemVariants}
-              className={`text-lg ${isDark ? 'text-gray-300' : 'text-gray-600'}`}
-            >
-              Have a project in mind? Let's discuss how we can work together to bring your ideas to life.
-            </motion.p>
-
-            <motion.div variants={containerVariants} className="space-y-4">
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-8"
+          >
+            {/* Contact Details */}
+            <div className="space-y-6">
               {contactInfo.map((info, index) => (
                 <motion.a
                   key={index}
-                  variants={itemVariants}
                   href={info.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`flex items-center gap-4 p-4 rounded-lg ${
-                    isDark 
-                      ? 'bg-gray-800/50 hover:bg-gray-800' 
-                      : 'bg-gray-100/50 hover:bg-gray-100'
-                  } transition-colors group backdrop-blur-sm`}
-                  whileHover={{ scale: 1.02, x: 10 }}
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
+                  className="flex items-center p-4 backdrop-blur-xl bg-white/5 rounded-xl border border-white/10 group transition-all hover:bg-white/10"
                 >
-                  <motion.div
-                    className={`p-2 rounded-lg bg-gradient-to-r ${info.color} group-hover:scale-110 transition-transform`}
-                  >
+                  <div className={`p-3 rounded-lg bg-gradient-to-r ${info.color} mr-4`}>
                     {info.icon}
-                  </motion.div>
-                  <span className="font-medium">{info.text}</span>
+                  </div>
+                  <span className="text-gray-300 group-hover:text-white transition-colors">
+                    {info.text}
+                  </span>
                 </motion.a>
               ))}
-            </motion.div>
+            </div>
 
-            <motion.div 
-              variants={containerVariants}
-              className="flex gap-4 mt-8"
-            >
-              {socialLinks.map((link, index) => (
-                <motion.a
-                  key={index}
-                  variants={itemVariants}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`p-3 rounded-full bg-gradient-to-r ${link.color} text-white hover:shadow-lg transition-shadow`}
-                  whileHover={{ scale: 1.1, rotate: 10 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label={link.label}
-                >
-                  {link.icon}
-                </motion.a>
-              ))}
-            </motion.div>
+            {/* Social Links */}
+            <div className="pt-8 border-t border-white/10">
+              <h3 className="text-xl font-semibold text-white mb-6">Follow Me</h3>
+              <div className="flex space-x-4">
+                {socialLinks.map((social, index) => (
+                  <motion.a
+                    key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.9 }}
+                    className={`p-3 rounded-lg bg-gradient-to-r ${social.color} text-white hover:shadow-lg transition-all`}
+                    aria-label={social.label}
+                  >
+                    {social.icon}
+                  </motion.a>
+                ))}
+              </div>
+            </div>
           </motion.div>
-
-          {/* Contact Form */}
-          <motion.form
-            variants={containerVariants}
-            onSubmit={handleSubmit}
-            className="space-y-6"
-          >
-            <motion.div variants={containerVariants} className="space-y-4">
-              {[
-                { name: 'name', type: 'text', placeholder: 'Your Name' },
-                { name: 'email', type: 'email', placeholder: 'Your Email' }
-              ].map((field) => (
-                <motion.div
-                  key={field.name}
-                  variants={itemVariants}
-                  className="relative"
-                >
-                  <motion.input
-                    type={field.type}
-                    name={field.name}
-                    value={formData[field.name]}
-                    onChange={handleChange}
-                    onFocus={() => setFocusedField(field.name)}
-                    onBlur={() => setFocusedField(null)}
-                    placeholder={field.placeholder}
-                    required
-                    className={`w-full p-4 rounded-lg outline-none ${
-                      isDark 
-                        ? 'bg-gray-800/50 border-gray-700 focus:border-blue-500' 
-                        : 'bg-gray-100/50 border-gray-200 focus:border-blue-600'
-                    } border-2 transition-all backdrop-blur-sm`}
-                  />
-                  {focusedField === field.name && (
-                    <motion.div
-                      layoutId="focus-border"
-                      className="absolute inset-0 rounded-lg border-2 border-blue-500 pointer-events-none"
-                      initial={false}
-                      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                    />
-                  )}
-                </motion.div>
-              ))}
-
-              <motion.div
-                variants={itemVariants}
-                className="relative"
-              >
-                <motion.textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  onFocus={() => setFocusedField('message')}
-                  onBlur={() => setFocusedField(null)}
-                  placeholder="Tell me about your project..."
-                  required
-                  rows="6"
-                  className={`w-full p-4 rounded-lg outline-none resize-none ${
-                    isDark 
-                      ? 'bg-gray-800/50 border-gray-700 focus:border-blue-500' 
-                      : 'bg-gray-100/50 border-gray-200 focus:border-blue-600'
-                  } border-2 transition-all backdrop-blur-sm`}
-                />
-                {focusedField === 'message' && (
-                  <motion.div
-                    layoutId="focus-border"
-                    className="absolute inset-0 rounded-lg border-2 border-blue-500 pointer-events-none"
-                    initial={false}
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  />
-                )}
-              </motion.div>
-            </motion.div>
-
-            <motion.button
-              variants={itemVariants}
-              type="submit"
-              disabled={isSubmitting}
-              className={`w-full p-4 rounded-lg flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white transition-all ${
-                isSubmitting ? 'opacity-70' : 'hover:shadow-lg'
-              }`}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={isSubmitting ? 'submitting' : 'idle'}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="flex items-center gap-2"
-                >
-                  <Send className={`w-5 h-5 ${isSubmitting ? 'animate-pulse' : ''}`} />
-                  <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
-                </motion.div>
-              </AnimatePresence>
-            </motion.button>
-
-            {/* Status Messages */}
-            <AnimatedStatus status={submitStatus} />
-          </motion.form>
-        </motion.div>
+        </div>
       </div>
-    </div>
-  );
-};
-
-const AnimatedStatus = ({ status }) => {
-  if (!status) return null;
-
-  const statusConfig = {
-    success: {
-      message: 'Message sent successfully! I will get back to you soon.',
-      className: 'from-green-500 to-emerald-500',
-    },
-    error: {
-      message: 'Failed to send message. Please try again.',
-      className: 'from-red-500 to-pink-500',
-    },
-  };
-
-  const config = statusConfig[status];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 10 }}
-      className={`bg-gradient-to-r ${config.className} text-white p-4 rounded-lg text-center mt-4`}
-    >
-      {config.message}
-    </motion.div>
+    </section>
   );
 };
 

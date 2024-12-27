@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { motion, useScroll, useSpring, useTransform, useMotionTemplate } from "framer-motion";
-import { Building2, Code, ExternalLink, Calendar, MapPin, ChevronDown } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { motion, useScroll, useSpring, useTransform, useMotionTemplate, AnimatePresence } from "framer-motion";
+import { Building2, Code, ExternalLink, Calendar, MapPin, ChevronDown, ArrowRight } from "lucide-react";
 
 const WorkExperience = () => {
   const [expandedCard, setExpandedCard] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const containerRef = useRef(null);
 
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -50]);
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
@@ -59,236 +65,199 @@ const WorkExperience = () => {
     },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-      },
-    },
-  };
-
   return (
-    <section className="relative py-24 overflow-hidden bg-black min-h-screen">
-      {/* Progress bar */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-600 origin-left z-50"
-        style={{ scaleX }}
-      />
+    <section 
+      ref={containerRef}
+      className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden min-h-screen" 
+      id="experience"
+    >
+      {/* Enhanced Background Effects */}
+      <AnimatePresence>
+        <motion.div 
+          className="absolute inset-0 overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)]" 
+               style={{ backgroundSize: '14px 24px' }} />
+          
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-72 h-72 bg-gradient-to-br from-blue-500/30 to-purple-500/30 rounded-full filter blur-3xl opacity-20"
+              style={{ y: parallaxY }}
+              animate={{
+                x: [0, 100, 0],
+                y: [0, 50, 0],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear",
+                delay: i * 5
+              }}
+              initial={{
+                left: `${i * 30}%`,
+                top: `${i * 20}%`,
+              }}
+            />
+          ))}
+        </motion.div>
+      </AnimatePresence>
 
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 opacity-75 pointer-events-none bg-gradient-to-br from-indigo-900/50 via-purple-900/30 to-black animate-gradient"></div>
-
-      {/* Enhanced animated particles */}
-      <div className="absolute inset-0 opacity-30">
-        {[...Array(30)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full"
-            animate={{
-              x: ["0%", "100%", "0%"],
-              y: ["0%", "100%", "0%"],
-              scale: [1, 2, 1],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 5,
-              repeat: Infinity,
-              ease: "linear",
-              delay: Math.random() * 5,
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="container relative z-10 px-4 mx-auto">
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Enhanced Section Header */}
         <motion.div
+          style={{ y: parallaxY }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto text-center mb-16"
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12"
         >
           <motion.div
-            whileHover={{ scale: 1.1, rotate: 360 }}
-            transition={{ duration: 0.8, type: "spring" }}
-            className="inline-flex items-center justify-center w-20 h-20 mb-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 p-1"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: "spring", stiffness: 100, delay: 0.2 }}
+            className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-r from-blue-500 to-purple-500 p-0.5 relative group"
           >
-            <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-              <Building2 className="w-10 h-10 text-white" />
+            <div className="w-full h-full rounded-2xl bg-gray-900 flex items-center justify-center relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Building2 className="w-10 h-10 text-white relative z-10" />
             </div>
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity" />
           </motion.div>
-
-          <h2 className="mb-4 text-4xl font-black text-transparent md:text-6xl bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-500 animate-gradient-x">
+          
+          <motion.h2 
+            className="text-3xl font-bold text-white mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             Work Experience
-          </h2>
-          <p className="text-lg text-gray-400 md:text-xl">
-            My professional journey and contributions
-          </p>
+          </motion.h2>
+          <motion.p 
+            className="text-gray-400 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            My professional journey and contributions in the tech industry.
+          </motion.p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="max-w-6xl mx-auto space-y-12"
-        >
+        {/* Experience Cards */}
+        <div className="max-w-4xl mx-auto space-y-8">
           {experiences.map((experience, index) => (
             <motion.div
-              key={experience.company}
-              variants={cardVariants}
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.2 }}
+              className={`relative p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/10 group ${
+                expandedCard === index ? 'ring-2 ring-blue-500/50' : ''
+              }`}
               onMouseMove={handleMouseMove}
-              className="relative"
+              onClick={() => setExpandedCard(expandedCard === index ? null : index)}
             >
               <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="p-8 rounded-2xl bg-gray-900/60 backdrop-blur-lg border border-gray-800 overflow-hidden group"
+                className="absolute -inset-px rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{
+                  background: `radial-gradient(600px circle at ${mouseX} ${mouseY}, rgba(79, 70, 229, 0.1), transparent 40%)`
+                }}
+              />
+              
+              <motion.div
+                initial={{ rotate: 0 }}
+                animate={{ rotate: expandedCard === index ? 180 : 0 }}
+                className="absolute top-6 right-6 text-gray-400 transition-colors group-hover:text-white"
               >
-                {/* Mouse follow gradient */}
-                <motion.div
-                  className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{
-                    background: useMotionTemplate`
-                      radial-gradient(
-                        400px circle at ${mouseX} ${mouseY},
-                        rgba(14, 165, 233, 0.15),
-                        transparent 80%
-                      )
-                    `,
-                  }}
-                />
+                <ChevronDown className="w-5 h-5" />
+              </motion.div>
 
-                {/* Header */}
-                <div className="relative flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-                  <motion.div 
-                    className="flex items-center gap-4"
-                    whileHover={{ x: 10 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <motion.div
-                      whileHover={{ rotate: 360, scale: 1.1 }}
-                      transition={{ duration: 0.5 }}
-                      className={`p-3 rounded-xl bg-gradient-to-r ${experience.gradient}`}
-                    >
-                      <experience.icon className="w-6 h-6 text-white" />
-                    </motion.div>
-                    <div>
-                      <h3 className="text-2xl font-bold text-white">{experience.company}</h3>
-                      <p className="text-lg text-gray-400">{experience.role}</p>
-                    </div>
-                  </motion.div>
-
-                  <motion.div 
-                    className="flex flex-wrap items-center gap-4 mt-4 md:mt-0"
-                    whileHover={{ x: -10 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <div className="flex items-center gap-2 text-gray-400">
-                      <Calendar className="w-4 h-4 text-blue-400" />
-                      <span>{experience.duration}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-400">
-                      <MapPin className="w-4 h-4 text-purple-400" />
-                      <span>{experience.location}</span>
-                    </div>
-                    <motion.a
-                      href={experience.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-white rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-600/20 hover:from-blue-500/30 hover:to-purple-600/30 border border-blue-500/20 hover:border-purple-500/30 transition-all"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Visit
-                    </motion.a>
-                  </motion.div>
+              <div className="relative z-10">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div>
+                    <h3 className="text-xl font-semibold text-white mb-1 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-purple-500 transition-all">
+                      {experience.role}
+                    </h3>
+                    <p className="text-purple-400 font-medium">{experience.company}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-gray-400 flex items-center gap-2 group-hover:text-gray-300 transition-colors">
+                      <Calendar className="w-4 h-4" />
+                      {experience.duration}
+                    </p>
+                    <p className="text-gray-400 flex items-center gap-2 justify-end group-hover:text-gray-300 transition-colors">
+                      <MapPin className="w-4 h-4" />
+                      {experience.location}
+                    </p>
+                  </div>
                 </div>
 
-                {/* Content */}
-                <div className="space-y-6">
-                  <div className="space-y-3">
-                    {experience.description.map((item, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.1 }}
-                        className="flex items-start gap-3 text-gray-300 group/item"
-                      >
-                        <motion.span 
-                          className="flex-shrink-0 w-1.5 h-1.5 mt-2 rounded-full bg-gradient-to-r from-blue-400 to-purple-500"
-                          whileHover={{ scale: 1.5 }}
-                        />
-                        <span className="group-hover/item:text-white transition-colors">{item}</span>
-                      </motion.div>
-                    ))}
-                  </div>
+                <AnimatePresence>
+                  {expandedCard === index && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="mt-4"
+                    >
+                      <div className="space-y-3">
+                        {experience.description.map((item, i) => (
+                          <motion.div
+                            key={i}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                            className="flex items-start gap-2 text-gray-300 group/item"
+                          >
+                            <ArrowRight className="w-4 h-4 mt-1 text-purple-400 group-hover/item:text-purple-300" />
+                            <span className="group-hover/item:text-white transition-colors">
+                              {item}
+                            </span>
+                          </motion.div>
+                        ))}
+                      </div>
 
-                  <motion.div
-                    animate={{ height: expandedCard === index ? "auto" : "0" }}
-                    className="overflow-hidden"
-                  >
-                    <div className="pt-4 space-y-4">
-                      <h4 className="text-lg font-semibold text-white">Skills & Technologies</h4>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-2 mt-4">
                         {experience.skills.map((skill, i) => (
                           <motion.span
-                            key={skill}
-                            initial={{ opacity: 0, scale: 0 }}
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: i * 0.1 }}
-                            whileHover={{ 
-                              scale: 1.1,
-                              backgroundColor: "rgba(14, 165, 233, 0.2)",
-                            }}
-                            className={`px-3 py-1 text-sm text-white rounded-full bg-gradient-to-r ${experience.gradient} opacity-80 cursor-pointer`}
+                            whileHover={{ scale: 1.05 }}
+                            className="px-3 py-1 rounded-full text-sm bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-gray-300 border border-white/5 hover:border-white/20 transition-colors"
                           >
                             {skill}
                           </motion.span>
                         ))}
                       </div>
-                    </div>
-                  </motion.div>
 
-                  <motion.button
-                    onClick={() => setExpandedCard(expandedCard === index ? null : index)}
-                    className="flex items-center gap-2 px-4 py-2 mt-4 text-sm text-white rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-600/20 hover:from-blue-500/30 hover:to-purple-600/30 transition-all group/button"
-                  >
-                    <span>{expandedCard === index ? "Show Less" : "Show More"}</span>
-                    <motion.div
-                      animate={{ rotate: expandedCard === index ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="transition-transform group-hover/button:translate-x-1"
-                    >
-                      <ChevronDown className="w-4 h-4" />
+                      {experience.website && (
+                        <motion.a
+                          href={experience.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.3 }}
+                          className="inline-flex items-center gap-2 mt-4 text-blue-400 hover:text-blue-300 transition-colors"
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Visit Website
+                        </motion.a>
+                      )}
                     </motion.div>
-                  </motion.button>
-                </div>
-              </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
