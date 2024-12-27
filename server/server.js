@@ -12,7 +12,12 @@ const { trackIP } = require('./middleware/ipTracking');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://resplendent-travesseiro-6f3023.netlify.app'] 
+    : ['http://localhost:5173'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(trackIP); // Track all requests
