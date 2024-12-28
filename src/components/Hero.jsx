@@ -26,10 +26,16 @@ const Hero = () => {
       setDownloadError(null);
       
       console.log('Fetching CV from server...');
-      const response = await fetch(`${API_ENDPOINTS.cv}/latest`);
+      const response = await fetch(`${API_ENDPOINTS.cv}/latest`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json, application/pdf',
+        },
+        credentials: 'include'
+      });
       
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ message: 'Failed to download CV' }));
         throw new Error(errorData.message || 'Failed to download CV');
       }
       
@@ -61,7 +67,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative flex items-center justify-center min-h-screen pt-20 overflow-hidden bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+    <section id="hero" className="relative flex items-center justify-center min-h-screen pt-20 overflow-hidden bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <div className="absolute inset-0">
         {[...Array(20)].map((_, i) => (
           <motion.div

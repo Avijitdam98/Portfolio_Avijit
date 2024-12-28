@@ -1,6 +1,4 @@
-const BASE_URL = import.meta.env.PROD 
-  ? 'https://portfolio-backend-h4cs.onrender.com'
-  : 'http://localhost:5000';
+const BASE_URL = 'https://portfolio-backend-h4cs.onrender.com';
 
 export const API_ENDPOINTS = {
   base: BASE_URL,

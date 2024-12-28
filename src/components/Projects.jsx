@@ -34,7 +34,7 @@ const projects = [
     github: "https://github.com/Avijitdam98/Project_Managment_tool",
     live: "https://project-managment-tool-one.vercel.app/login",
     image: {
-      src: "/images/projects/project-management.webp",
+      src: "/Portfolio_Avijit/images/projects/project-management.webp",
       gradient: {
         from: "#3B82F6",
         via: "#6366F1",
@@ -63,7 +63,7 @@ const projects = [
     github: "https://github.com/Avijitdam98/Invoice_genrator",
     live: "https://invoice-genrator-rosy.vercel.app",
     image: {
-      src: "/images/projects/invoice-generator.webp",
+      src: "/Portfolio_Avijit/images/projects/invoice-generator.webp",
       gradient: {
         from: "#06B6D4",
         via: "#0EA5E9",
@@ -92,7 +92,7 @@ const projects = [
     github: "https://github.com/Avijitdam98/fullstackchatapp",
     live: "https://fullstackchatapp-29xc.onrender.com",
     image: {
-      src: "/images/projects/chat-app.webp",
+      src: "/Portfolio_Avijit/images/projects/project-management.webp",
       gradient: {
         from: "#3B82F6",
         via: "#6366F1",
@@ -121,7 +121,7 @@ const projects = [
     github: "https://github.com/Avijitdam98/food_app",
     live: "https://food-app-navy.vercel.app/",
     image: {
-      src: "/images/projects/food-app.webp",
+      src: "/Portfolio_Avijit/images/projects/food-app.webp",
       gradient: {
         from: "#06B6D4",
         via: "#0EA5E9",
@@ -150,7 +150,7 @@ const projects = [
     github: "https://github.com/Avijitdam98/ecommerce_site_clone",
     live: "https://ecommerce-site-clone.pages.dev/",
     image: {
-      src: "/images/projects/ecommerce.webp",
+      src: "/Portfolio_Avijit/images/projects/ecommerce.webp",
       gradient: {
         from: "#F43F5E",
         via: "#EC4899",
@@ -378,9 +378,9 @@ const Projects = () => {
 
   return (
     <section 
+      id="projects"
       ref={containerRef}
       className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden min-h-screen" 
-      id="projects"
     >
       {/* Enhanced Background Effects */}
       <AnimatePresence>

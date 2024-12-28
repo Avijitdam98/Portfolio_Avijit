@@ -82,7 +82,7 @@ const Contact = () => {
   ];
 
   return (
-    <section className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden" id="contact">
+    <section id="contact" className="relative py-20 bg-gradient-to-b from-gray-900 to-black overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)]" 

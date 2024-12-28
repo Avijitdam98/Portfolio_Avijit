@@ -106,10 +106,10 @@ const About = () => {
   };
 
   return (
-    <section
+    <section 
+      id="about" 
       ref={ref}
-      id="about"
-      className="relative py-24 overflow-hidden bg-gradient-to-b from-gray-900 to-black dark:from-gray-900 dark:to-black"
+      className="relative py-24 overflow-hidden bg-gradient-to-b from-gray-900 to-black dark:from-gray-900 dark:to-black min-h-screen z-10"
     >
       {/* Animated Lines */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

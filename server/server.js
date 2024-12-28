@@ -1,66 +1,85 @@
-require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
-const cvRoutes = require('./routes/cv');
-const adminRoutes = require('./routes/admin');
-const auth = require('./middleware/auth');
-const { limiter, authLimiter } = require('./middleware/rateLimit');
-const { trackIP } = require('./middleware/ipTracking');
+const dotenv = require('dotenv');
+const cvRoutes = require('./routes/cvRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+
+dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(cors({
-  origin: [
-    'https://avijitdam98.github.io',
-    'http://localhost:5173',
-    'http://192.168.190.1:5173',
-    'https://portfolio-avijit.vercel.app',
-    'https://resplendent-travesseiro-6f3023.netlify.app'
-  ],
+// MongoDB connection with proper error handling
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log('Connected to MongoDB Atlas');
+  })
+  .catch((error) => {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
+  });
+
+// Handle MongoDB connection errors
+mongoose.connection.on('error', err => {
+  console.error('MongoDB connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+  console.log('MongoDB disconnected');
+});
+
+// CORS configuration
+const corsOptions = {
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = [
+      'https://avijitdam98.github.io',
+      'http://localhost:5173',
+      'http://172.28.80.1:5173',
+      'http://192.168.190.1:5173'
+    ];
+    
+    if (process.env.NODE_ENV !== 'production') {
+      callback(null, true); // Allow all origins in development
+    } else if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true); // Allow specific origins in production
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Disposition']
+};
+
+app.use(cors(corsOptions));
+
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(trackIP); // Track all requests
-app.use(limiter); // Apply rate limiting to all routes
 
-// Ensure uploads directory exists
-const uploadDir = path.join(__dirname, 'uploads', 'cv');
-const fs = require('fs');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+// Routes
+app.use('/api/cv', cvRoutes);
+app.use('/api/admin', adminRoutes);
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
-
-// Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// Public routes
-app.use('/api/admin', authLimiter, adminRoutes); // Admin routes with stricter rate limiting
-app.use('/api/cv/latest', limiter, cvRoutes); // Allow public access to latest CV
-app.use('/api/cv', cvRoutes); // General CV routes
+// Health check route
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Server is running' });
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: err.message });
+  res.status(500).json({ 
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  console.log('Environment variables loaded:', {
-    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
-    JWT_SECRET: process.env.JWT_SECRET ? '[SET]' : '[NOT SET]',
-    PORT: process.env.PORT
-  });
+  console.log(`Server is running on port ${PORT}`);
 });

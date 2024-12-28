@@ -67,9 +67,9 @@ const WorkExperience = () => {
 
   return (
     <section 
-      ref={containerRef}
-      className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden min-h-screen" 
       id="experience"
+      ref={containerRef} 
+      className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden min-h-screen"
     >
       {/* Enhanced Background Effects */}
       <AnimatePresence>

@@ -6,7 +6,7 @@ const navItems = [
   { name: 'Home', icon: Home, href: '#hero' },
   { name: 'About', icon: User, href: '#about' },
   { name: 'Education', icon: Book, href: '#education' },
-  { name: 'Experience', icon: Briefcase, href: '#work-experience' },
+  { name: 'Experience', icon: Briefcase, href: '#experience' },
   { name: 'Projects', icon: Award, href: '#projects' },
   { name: 'Contact', icon: Mail, href: '#contact' },
 ];
@@ -14,6 +14,20 @@ const navItems = [
 const Navigation = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80; // Height of your fixed navigation
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,8 +85,12 @@ const Navigation = () => {
               {navItems.map((item) => (
                 <motion.a
                   key={item.name}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(item.href.substring(1));
+                  }}
                   href={item.href}
-                  className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer ${
                     activeSection === item.href.substring(1)
                       ? 'text-white'
                       : 'text-gray-400 hover:text-white'
@@ -141,6 +159,10 @@ const Navigation = () => {
             {navItems.map((item) => (
               <motion.a
                 key={item.name}
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToSection(item.href.substring(1));
+                }}
                 href={item.href}
                 className={`relative p-2 rounded-full transition-all ${
                   activeSection === item.href.substring(1)

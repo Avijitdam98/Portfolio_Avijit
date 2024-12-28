@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="128" fill="url(#grad)"/>
-  <text x="256" y="320" font-family="Arial, sans-serif" font-weight="bold" font-size="240" text-anchor="middle" fill="white">
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="32" height="32" rx="6" fill="url(#gradient)" />
+  
+  <!-- Text Shadow -->
+  <text x="16" y="21" font-family="Arial Black, Helvetica, sans-serif" font-size="18" font-weight="900" text-anchor="middle" fill="rgba(0,0,0,0.2)" transform="translate(1,1)">
     AD
   </text>
+  
+  <!-- Main Text -->
+  <text x="16" y="21" font-family="Arial Black, Helvetica, sans-serif" font-size="18" font-weight="900" text-anchor="middle" fill="white">
+    AD
+  </text>
+  
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" style="stop-color:#3B82F6" />
+      <stop offset="50%" style="stop-color:#6366F1" />
+      <stop offset="100%" style="stop-color:#8B5CF6" />
+    </linearGradient>
+  </defs>
 </svg>

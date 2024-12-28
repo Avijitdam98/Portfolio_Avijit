@@ -79,9 +79,9 @@ const Education = () => {
 
   return (
     <section 
-      ref={containerRef}
-      className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden min-h-screen" 
       id="education"
+      ref={containerRef} 
+      className="relative py-24 bg-gradient-to-b from-gray-900 to-black overflow-hidden min-h-screen" 
     >
       <AnimatePresence>
         <motion.div 
